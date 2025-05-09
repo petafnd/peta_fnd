@@ -1,0 +1,417 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pemesanan PETA F&D</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .logo-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        .logo-overlay img {
+            width: 250px;
+            height: auto;
+        }
+        .category {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .category h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .menu-list {
+            padding: 10px;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .menu-item {
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 5px;
+        }
+        .menu-item span {
+            font-weight: 400;
+            flex-grow: 1;
+        }
+        .menu-item .price {
+            font-weight: 600;
+            color: #4CAF50;
+            font-size: 16px;
+            width: 160px; /* Increased width for symmetric alignment */
+            text-align: right;
+        }
+        .form-input {
+            margin-bottom: 15px;
+        }
+        .form-input label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .form-input input, .form-input textarea, .form-input select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .form-input textarea {
+            resize: vertical;
+        }
+        .form-input select {
+            cursor: pointer;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #888;
+        }
+        .popup {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: none;
+            z-index: 999;
+            font-size: 16px;
+            text-align: center;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+        .popup.show {
+            display: block;
+            animation: fadeIn 0.5s, fadeOut 2s 1.5s;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+        .cart {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%;
+            flex-wrap: nowrap;
+        }
+        .cart-item span {
+            font-weight: bold;
+            font-size: 16px;
+            flex: 1;
+            text-align: center;
+        }
+        .cart-item .qty {
+            display: flex;
+            justify-content: center;
+            width: 70px;
+            align-items: center;
+            transform: translateX(10px);
+        }
+        .cart-item .qty input {
+            width: 30px;
+            text-align: center;
+            font-size: 14px;
+            padding: 3px;
+        }
+        .cart-item .price {
+            font-weight: 600;
+            color: #4CAF50;
+            font-size: 16px;
+            width: 160px; /* Increased width for symmetric alignment */
+            text-align: right;
+            transform: translateX(10px);
+        }
+        .cart-item .remove-item {
+            cursor: pointer;
+            color: red;
+            font-size: 18px;
+        }
+        .total-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-top: 20px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logo-overlay">
+        <img src="data:image/png;base64,{logo_base64}" alt="Logo PETA F&D">
+    </div>
+    <h1>Form Pemesanan PETA F&D</h1>
+    <form onsubmit="sendToWhatsApp(event)">
+        <!-- Nama dan Informasi Kontak -->
+        <div class="form-input">
+            <label for="name">Nama Lengkap</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-input">
+            <label for="phone">Nomor Telepon</label>
+            <input type="text" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-input">
+            <label for="address">Alamat Lengkap</label>
+            <textarea id="address" name="address" required></textarea>
+        </div>
+
+        <!-- Kategori Makanan -->
+        <div class="category">
+            <h2>Makanan</h2>
+            <div class="menu-list">
+                <div class="menu-item"><span>1. Nasi + Chicken Korean Sauce</span> <span class="price">Rp 20,000</span> <button type="button" onclick="addToCart('Nasi + Chicken Korean Sauce', 20000)"><i class="fas fa-shopping-cart"></i></button></div>
+                <div class="menu-item"><span>2. Nasi + Ayam Suwir Kemangi</span> <span class="price">Rp 20,000</span> <button type="button" onclick="addToCart('Nasi + Ayam Suwir Kemangi', 20000)"><i class="fas fa-shopping-cart"></i></button></div>
+                <div class="menu-item"><span>3. Nasi + Chicken Katsu</span> <span class="price">Rp 20,000</span> <button type="button" onclick="addToCart('Nasi + Chicken Katsu', 20000)"><i class="fas fa-shopping-cart"></i></button></div>
+                <div class="menu-item"><span>4. Nasi + Chicken Pop Mayo</span> <span class="price">Rp 20,000</span> <button type="button" onclick="addToCart('Nasi + Chicken Pop Mayo', 20000)"><i class="fas fa-shopping-cart"></i></button></div>
+            </div>
+        </div>
+
+        <!-- Kategori Snack -->
+        <div class="category">
+            <h2>Snack</h2>
+            <div class="menu-list">
+                <div class="menu-item"><span>1. Dimsum</span> <span class="price">Rp 10,000 / 3pcs</span> <button type="button" onclick="addToCart('Dimsum', 10000)"><i class="fas fa-shopping-cart"></i></button></div>
+                <div class="menu-item"><span>2. Udang Keju</span> <span class="price">Rp 10,000 / 3pcs</span> <button type="button" onclick="addToCart('Udang Keju', 10000)"><i class="fas fa-shopping-cart"></i></button></div>
+                <div class="menu-item"><span>3. PopCorn</span> <span class="price">Rp 10,000 / pcs</span> <button type="button" onclick="addToCart('PopCorn', 10000)"><i class="fas fa-shopping-cart"></i></button></div>
+                <div class="menu-item"><span>4. Pentol Cheese Jeletot</span> <span class="price">Rp 10,000 / 8pcs</span> <button type="button" onclick="addToCart('Pentol Cheese Jeletot', 10000)"><i class="fas fa-shopping-cart"></i></button></div>
+                <div class="menu-item"><span>5. Risol Mayam (Mayo Ayam)</span> <span class="price">Rp 10,000 / 3pcs</span> <button type="button" onclick="addToCart('Risol Mayam', 10000)"><i class="fas fa-shopping-cart"></i></button></div>
+            </div>
+        </div>
+
+        <!-- Kategori Minuman -->
+        <div class="category">
+            <h2>Minuman</h2>
+            <div class="menu-list">
+                <div class="menu-item"><span>1. Sweet Pink Lava</span> <span class="price">Rp 7,000</span> <button type="button" onclick="addToCart('Sweet Pink Lava', 7000)"><i class="fas fa-shopping-cart"></i></button></div>
+                <div class="menu-item"><span>2. Java Ice Tea</span> <span class="price">Rp 7,000</span> <button type="button" onclick="addToCart('Java Ice Tea', 7000)"><i class="fas fa-shopping-cart"></i></button></div>
+            </div>
+        </div>
+
+        <!-- Keranjang Belanja -->
+        <div class="cart" id="cart">
+            <h3><i class="fas fa-shopping-cart"></i></h3>
+            <div id="cart-items"></div>
+            <div class="total-price">
+                Total: Rp <span id="total-price">0</span>
+            </div>
+        </div>
+
+        <!-- Pesan Tambahan -->
+        <div class="form-input">
+            <label for="message">Pesan Tambahan</label>
+            <textarea id="message" name="message" placeholder="Jika ada koreksi atau permintaan tambahan"></textarea>
+        </div>
+
+        <!-- Metode Pembayaran -->
+        <div class="form-input">
+            <label for="payment-method">Metode Pembayaran</label>
+            <select id="payment-method" name="payment-method" required>
+                <option value="COD">COD (Bayar di Tempat)</option>
+                <option value="Bank Transfer">Transfer Bank</option>
+                <option value="QRIS">QRIS</option>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-input">
+            <button type="submit" class="submit-btn">Kirim Pesanan</button>
+        </div>
+    </form>
+</div>
+
+<div class="footer">
+    &copy; PETA F&D 2025
+</div>
+
+<!-- Pop-up for cart confirmation -->
+<div class="popup" id="popup"></div>
+
+<script>
+    let cart = [];
+    let totalPrice = 0;
+
+    function addToCart(menu, price) {
+        const existingItem = cart.find(item => item.menu === menu);
+        if (existingItem) {
+            existingItem.qty += 1;
+            existingItem.totalPrice = existingItem.qty * existingItem.price;
+        } else {
+            cart.push({menu: menu, price: price, qty: 1, totalPrice: price});
+        }
+
+        totalPrice = cart.reduce((total, item) => total + item.totalPrice, 0);
+        updateCart();
+
+        let popup = document.getElementById('popup');
+        popup.innerHTML = `<i class="fas fa-shopping-cart"></i> ${menu} telah ditambahkan ke keranjang.`;
+        popup.classList.add('show');
+        setTimeout(() => popup.classList.remove('show'), 2500);
+    }
+
+    function updateCart() {
+        let cartItems = document.getElementById('cart-items');
+        let total = document.getElementById('total-price');
+        cartItems.innerHTML = '';
+
+        cart.forEach(item => {
+            let div = document.createElement('div');
+            div.classList.add('cart-item');
+            div.innerHTML = `
+                <span>${item.menu}</span>
+                <div class="qty">
+                    <button onclick="changeQty('${item.menu}', -1)">-</button>
+                    <input type="number" value="${item.qty}" min="1" onchange="updateQty('${item.menu}', this.value)">
+                    <button onclick="changeQty('${item.menu}', 1)">+</button>
+                </div>
+                <span class="price">Rp ${item.totalPrice.toLocaleString('id-ID')}</span>
+                <span class="remove-item" onclick="removeItem('${item.menu}')"><i class="fas fa-trash-alt"></i></span>
+            `;
+            cartItems.appendChild(div);
+        });
+
+        total.innerHTML = totalPrice.toLocaleString('id-ID');
+    }
+
+    function updateQty(menu, newQty) {
+        newQty = parseInt(newQty, 10);
+        if (newQty <= 0) {
+            removeItem(menu);
+        } else {
+            const item = cart.find(item => item.menu === menu);
+            if (item) {
+                item.qty = newQty;
+                item.totalPrice = item.qty * item.price;
+                totalPrice = cart.reduce((total, item) => total + item.totalPrice, 0);
+                updateCart();
+            }
+        }
+    }
+
+    function changeQty(menu, delta) {
+        const item = cart.find(item => item.menu === menu);
+        if (item) {
+            item.qty += delta;
+            if (item.qty <= 0) {
+                removeItem(menu);
+            } else {
+                item.totalPrice = item.qty * item.price;
+                totalPrice = cart.reduce((total, item) => total + item.totalPrice, 0);
+                updateCart();
+            }
+        }
+    }
+
+    function removeItem(menu) {
+        cart = cart.filter(item => item.menu !== menu);
+        totalPrice = cart.reduce((total, item) => total + item.totalPrice, 0);
+        updateCart();
+    }
+</script>
+
+
+<script>
+    function sendToWhatsApp(event) {
+        event.preventDefault();
+        const name = document.getElementById("name").value;
+        const phone = document.getElementById("phone").value;
+        const address = document.getElementById("address").value;
+        const message = document.getElementById("message").value;
+        const payment = document.getElementById("payment-method").value;
+
+        let cartText = "";
+        cart.forEach(item => {
+            cartText += `- ${item.menu} x${item.qty} (Rp ${item.totalPrice.toLocaleString('id-ID')})\n`;
+        });
+
+        const total = totalPrice.toLocaleString('id-ID');
+        const waMessage = `Halo, saya ingin memesan:\n\nNama: ${name}\nNo HP: ${phone}\nAlamat: ${address}\n\nPesanan:\n${cartText}\nTotal: Rp ${total}\n\nPembayaran: ${payment}\nPesan Tambahan: ${message}`;
+
+        const waUrl = "https://wa.me/6285215645434?text=" + encodeURIComponent(waMessage);
+        window.open(waUrl, '_blank');
+    }
+</script>
+</body>
+</html>
